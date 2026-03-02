@@ -1,1 +1,29 @@
-{ "ts":"init", "spot":null, "hv7":null, "matches":[] }
+{
+  "ts": "2026-03-02T14:05:17.669Z",
+  "spot": 65449.75,
+  "hv7": 60.015011240073925,
+  "rules": {
+    "dteMin": 3,
+    "dteMax": 30,
+    "ivMin": 70,
+    "vrpMin": 20,
+    "ratioMin": 0.7,
+    "ratioMax": 0.86,
+    "targetRatio": 0.8,
+    "deltaMin": 0.04,
+    "deltaMax": 0.11
+  },
+  "matches": [
+    {
+      "symbol": "BTC-20MAR26-50000-P",
+      "dte": 17,
+      "strike": 50000,
+      "ratio": 0.7639448584601164,
+      "iv": 80.58,
+      "vrp": 20.564988759926074,
+      "delta": -0.05359,
+      "markPrice": 0.0043,
+      "score": 0.03605514153988365
+    }
+  ]
+}

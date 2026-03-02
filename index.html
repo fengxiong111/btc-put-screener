@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BTC Put 筛选</title>
+<style>
+  :root{--bg:#0b0f1a;--card:#12172a;--ink:#e8eefc;--muted:rgba(232,238,252,.6)}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:920px;margin:28px auto;padding:18px}
+  h1{margin:0 0 10px;font-weight:650;letter-spacing:-0.02em}
+  .muted{color:var(--muted);font-size:13px}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+  .card{background:var(--card);border-radius:18px;padding:16px}
+  .row{display:flex;justify-content:space-between;gap:12px;margin:8px 0}
+  .pill{background:rgba(255,255,255,.06);border-radius:999px;padding:6px 10px;font-size:12px}
+  .big{font-size:18px;font-weight:650}
+  .mono{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>BTC Put 筛选</h1>
+  <div class="muted mono" id="meta">加载中…</div>
+  <div class="grid" id="list"></div>
+</div>
+
+<script>
+function fmt(n, d=2){ if(n===null||n===undefined||Number.isNaN(n)) return "-"; return Number(n).toFixed(d); }
+
+async function load(){
+  const r = await fetch("./data/binance_btc_put_candidates.json?ts="+Date.now(), { cache:"no-store" });
+  const j = await r.json();
+
+  document.getElementById("meta").textContent =
+    `更新时间：${j.ts} ｜ Spot: ${fmt(j.spot,0)} ｜ HV7: ${fmt(j.hv7,1)}% ｜ 命中: ${j.matches?.length||0}`;
+
+  const box = document.getElementById("list");
+  box.innerHTML = "";
+
+  const ms = j.matches || [];
+  if(ms.length === 0){
+    box.innerHTML = `<div class="card">暂无符合条件（常见原因：市场 IV < 70）</div>`;
+    return;
+  }
+
+  ms.slice(0, 30).forEach(m=>{
+    const div = document.createElement("div");
+    div.className = "card mono";
+    div.innerHTML = `
+      <div class="row">
+        <div class="big">${m.symbol}</div>
+        <div class="pill">${m.dte}D ｜ ratio ${fmt(m.ratio,2)}</div>
+      </div>
+      <div class="row"><span>Strike</span><span>${fmt(m.strike,0)}</span></div>
+      <div class="row"><span>Δ</span><span>${fmt(m.delta,3)}</span></div>
+      <div class="row"><span>IV</span><span>${fmt(m.iv,1)}%</span></div>
+      <div class="row"><span>VRP(IV-HV7)</span><span>${fmt(m.vrp,1)}pp</span></div>
+      <div class="row"><span>Mark</span><span>${fmt(m.markPrice,2)}</span></div>
+    `;
+    box.appendChild(div);
+  });
+}
+
+load();
+setInterval(load, 60_000);
+</script>
+</body>
+</html>

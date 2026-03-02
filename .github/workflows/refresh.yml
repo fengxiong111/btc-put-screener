@@ -21,14 +21,6 @@ jobs:
         env:
           BINANCE_API_KEY: ${{ secrets.BINANCE_API_KEY }}
         run: node scripts/fetch_binance_eapi.mjs
-
-      - name: Commit
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add data/binance_btc_put_candidates.json
-          git commit -m "data: refresh" || exit 0
-          git push
 - name: Notify
   if: success()
   run: |
@@ -38,3 +30,11 @@ jobs:
       -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
       -d text="🔥 BTC Put 信号 ${MATCHES} 条"
     fi
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/binance_btc_put_candidates.json
+          git commit -m "data: refresh" || exit 0
+          git push

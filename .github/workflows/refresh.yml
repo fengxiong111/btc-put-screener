@@ -24,13 +24,14 @@ jobs:
 - name: Notify
   if: success()
   run: |
-    MATCHES=$(jq '.matches | length' data/binance_btc_put_candidates.json)
-    if [ "$MATCHES" -gt 0 ]; then
+    DATA=$(cat data/binance_btc_put_candidates.json)
+    COUNT=$(echo $DATA | jq '.matches | length')
+    if [ "$COUNT" -gt 0 ]; then
+      TEXT=$(echo $DATA | jq -r '.matches[] | "\(.strike) · \(.dte)D"' | paste -sd "\n" -)
       curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage \
       -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-      -d text="🔥 BTC Put 信号 ${MATCHES} 条"
+      -d text="$TEXT"
     fi
-
       - name: Commit
         run: |
           git config user.name "github-actions"

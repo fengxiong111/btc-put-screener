@@ -1,19 +1,6 @@
 {
-  "ts": "2026-03-02T23:48:10.103Z",
-  "spot": 68946.84,
-  "hv7": 66.12417905810773,
-  "vrpMin": 22,
-  "rules": {
-    "dteMin": 3,
-    "dteMax": 30,
-    "hv7Max": 65,
-    "ivMin": 70,
-    "ratioMin": 0.7,
-    "ratioMax": 0.86,
-    "targetRatio": 0.8,
-    "deltaMin": 0.04,
-    "deltaMax": 0.09
-  },
-  "matches": [],
-  "note": "HV7=66.1 > 65：禁止开仓"
+  "ts": "2026-03-03T00:43:58.005Z",
+  "spot": 69157.4,
+  "hv7": 66.23247249558027,
+  "matches": []
 }
